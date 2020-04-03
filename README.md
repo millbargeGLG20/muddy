@@ -6,7 +6,7 @@ I've created a `Makefile` for the following:
 
 Building the Docker image:
 ```
-(venv) TARDIS:muddy mspear$ make build
+(venv) TARDIS:muddy $ make build
 docker build -t muddy:latest .
 Sending build context to Docker daemon  25.96MB
 Step 1/6 : FROM python:3
@@ -73,7 +73,7 @@ Successfully tagged muddy:latest
 
 Running the Docker image:
 ```
-(venv) TARDIS:muddy mspear$ make run
+(venv) TARDIS:muddy $ make run
 docker run --name muddy -d -p 5000:5000 -e API_TOKEN=f3a0a9d33043410f1b54498a42e5d3fd muddy
 596d90899f0b54a3d2ddfe83d797038d53505e6c48bfa7bbfdd07a534aff737d
 docker ps
@@ -85,7 +85,7 @@ CONTAINER ID        IMAGE               COMMAND              CREATED            
 
 Watching the application:
 ```
-(venv) TARDIS:muddy mspear$ make logs
+(venv) TARDIS:muddy $ make logs
 docker logs -f muddy
  * Serving Flask app "muddy" (lazy loading)
  * Environment: production
@@ -98,7 +98,16 @@ docker logs -f muddy
 
 Using the application:
 ```
-(venv) TARDIS:muddy mspear$ curl http://localhost:5000/?zip_code=48439
+(venv) TARDIS:muddy $ curl http://localhost:5000/?zip_code=48439
 NOT MUDDY
 ```
 
+Running the unit tests:
+```
+(venv) TARDIS:muddy $ python3 test_muddy.py 
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.005s
+
+OK
+```
