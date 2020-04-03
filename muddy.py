@@ -4,7 +4,7 @@ import os
 import requests
 import json
 import sys
-from flask import Flask
+from flask import Flask, request
 from datetime import date, timedelta
 
 # create the flask app
@@ -14,11 +14,13 @@ app = Flask(__name__)
 days_from = 3
 api_token = os.getenv('API_TOKEN')
 api_url_base = 'api.openweathermap.org'
-zip_code = os.getenv('ZIP_CODE')
+# zip_code = os.getenv('ZIP_CODE')
 
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def muddy():
+
+    zip_code = request.args.get('zip_code')
 
     muddy = False
     try:
@@ -40,10 +42,11 @@ def muddy():
                 return('MUDDY')
 
         else:
-            raise('got a non-good status code')
+            # raise('got a non-good status code')
+            return('got a non-good status code')
 
     except Exception as e:
-        logging.debug('exception occurred {}'.format(e))
+        # logging.debug('exception occurred {}'.format(e))
         return(e)
 
 
