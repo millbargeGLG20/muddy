@@ -1,10 +1,76 @@
 # Muddy
 
-Get an API token from [here](https://openweathermap.org)
+> If the weather will be muddy in 3 days, it will return "MUDDY".  
+> If the weather will not be muddy in 3 days, it will return "NOT MUDDY".  
+> This code was written with the assumption that at any point 3 days from now, there is rain and the temperature at that time is above freezing, it will be muddy.
 
-I've created a `Makefile` for the following:
 
-Building the Docker image:
+## Get an API token from [here](https://openweathermap.org)
+
+## Create a Python virtual environment
+
+```
+TARDIS:muddy mspear$ virtualenv -p python3 venv
+created virtual environment CPython3.7.4.final.0-64 in 271ms
+  creator CPython3Posix(dest=/Users/mspear/muddy/venv, clear=False, global=False)
+  seeder FromAppData(download=False, pip=latest, setuptools=latest, wheel=latest, via=copy,
+ app_data_dir=/Users/mspear/Library/Application Support/virtualenv/seed-app-data/v1.0.1)
+  activators BashActivator,CShellActivator,FishActivator,PowerShellActivator,PythonActivator,XonshActivator
+```
+
+## Activate it:
+```
+TARDIS:muddy $ source venv/bin/activate
+```
+
+## Install the requirements:
+```
+(venv) TARDIS:muddy $ pip3 install -r requirements.txt 
+Collecting requests
+  Using cached requests-2.23.0-py2.py3-none-any.whl (58 kB)
+Processing /Users/mspear/Library/Caches/pip/wheels/80/a0/e2/7960cea226c97370c4c256a8f70c64a
+392ab25b805a9683a5a/pprint-0.1-py3-none-any.whl
+Collecting datetime
+  Using cached DateTime-4.3-py2.py3-none-any.whl (60 kB)
+Collecting Flask
+  Downloading Flask-1.1.2-py2.py3-none-any.whl (94 kB)
+     |████████████████████████████████| 94 kB 1.2 MB/s 
+Collecting certifi>=2017.4.17
+  Using cached certifi-2019.11.28-py2.py3-none-any.whl (156 kB)
+Collecting urllib3!=1.25.0,!=1.25.1,<1.26,>=1.21.1
+  Using cached urllib3-1.25.8-py2.py3-none-any.whl (125 kB)
+Collecting chardet<4,>=3.0.2
+  Using cached chardet-3.0.4-py2.py3-none-any.whl (133 kB)
+Collecting idna<3,>=2.5
+  Using cached idna-2.9-py2.py3-none-any.whl (58 kB)
+Collecting zope.interface
+  Using cached zope.interface-5.0.2-cp37-cp37m-macosx_10_9_x86_64.whl (184 kB)
+Collecting pytz
+  Using cached pytz-2019.3-py2.py3-none-any.whl (509 kB)
+Collecting Werkzeug>=0.15
+  Using cached Werkzeug-1.0.1-py2.py3-none-any.whl (298 kB)
+Collecting Jinja2>=2.10.1
+  Using cached Jinja2-2.11.1-py2.py3-none-any.whl (126 kB)
+Collecting itsdangerous>=0.24
+  Using cached itsdangerous-1.1.0-py2.py3-none-any.whl (16 kB)
+Collecting click>=5.1
+  Using cached click-7.1.1-py2.py3-none-any.whl (82 kB)
+Requirement already satisfied: setuptools in ./venv/lib/python3.7/site-packages (from zope.interface->datetime->-r requirements.txt (line 3)) (46.1.3)
+Collecting MarkupSafe>=0.23
+  Using cached MarkupSafe-1.1.1-cp37-cp37m-macosx_10_6_intel.whl (18 kB)
+Installing collected packages: certifi, urllib3, chardet, idna, requests, pprint, zope.interface, pytz, datetime, Werkzeug, MarkupSafe, Jinja2, itsdangerous, click, Flask
+Successfully installed Flask-1.1.2 Jinja2-2.11.1 MarkupSafe-1.1.1 Werkzeug-1.0.1 certifi-2019.11.28 chardet-3.0.4 click-7.1.1 datetime-4.3 idna-2.9 itsdangerous-1.1.0 pprint-0.1 pytz-2019.3 requests-2.23.0 urllib3-1.25.8 zope.interface-5.0.2
+```
+
+## Add your token as an environment variable:
+
+```
+export API_TOKEN=...
+```
+
+## I've created a `Makefile` for the following:
+
+## Building the Docker image:
 ```
 (venv) TARDIS:muddy $ make build
 docker build -t muddy:latest .
@@ -71,7 +137,7 @@ Successfully built 4710acba80f8
 Successfully tagged muddy:latest
 ```
 
-Running the Docker image:
+## Running the Docker image:
 ```
 (venv) TARDIS:muddy $ make run
 docker run --name muddy -d -p 5000:5000 -e API_TOKEN=f3a0a9d33043410f1b54498a42e5d3fd muddy
@@ -83,7 +149,7 @@ CONTAINER ID        IMAGE               COMMAND              CREATED            
 000->5000/tcp   muddy
 ```
 
-Watching the application:
+## Watching the application:
 ```
 (venv) TARDIS:muddy $ make logs
 docker logs -f muddy
@@ -96,13 +162,14 @@ docker logs -f muddy
 172.17.0.1 - - [03/Apr/2020 02:57:03] "GET /?zip_code=48439 HTTP/1.1" 200 -
 ```
 
-Using the application:
+## Using the application:
+Pass in the zipcode as a parameter
 ```
 (venv) TARDIS:muddy $ curl http://localhost:5000/?zip_code=48439
 NOT MUDDY
 ```
 
-Running the unit tests:
+## Running the unit tests:
 ```
 (venv) TARDIS:muddy $ python3 test_muddy.py 
 ....
